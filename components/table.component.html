@@ -32,9 +32,6 @@
     position: fixed;
     top: 50px;
     right: 10px;
-    background: white;
-    padding: 4px 6px;
-    border-radius: 4px;
   }
 
   ._component_ .level {
@@ -82,16 +79,15 @@
     margin: 0 0 5px;
   }
 </style>
-<label class="viewmode">
-  <b>View Mode</b>
-  <select 
-    data-bind="value=_component_.viewmode"
-    data-event="change:_component_.setViewmode"
-  >
-    <option>Summary</option>
-    <option>Detail</option>
-  </select>
-</label>
+<div
+  class="viewmode"
+  data-component="selector" 
+  data-bind="value=_component_.viewmode"
+  data-event="change:_component_.setViewmode"
+>
+  <span>List</span>
+  <span>Detail</span>
+</div>
 <div class="spell" data-list="_data_:name">
   <div class="summary">
     <h4>
@@ -125,8 +121,9 @@
   </div>
 </div>
 <script>
+  b8r.component('https://rawgit.com/tonioloewald/bindinator.js/master/components/selector');
   set({
-    viewmode: 'Summary',
+    viewmode: 'List',
     setViewmode() {
       component.classList.toggle('expanded', get('viewmode') === 'Detail');
     },

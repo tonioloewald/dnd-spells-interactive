@@ -24,14 +24,16 @@
   }
 </style>
 <label>
-  Sort By
-  <select 
+  Sort by
+  <span 
     data-bind="value=_component_.sortField"
+    data-component="selector"
     data-event="change:_component_.applyFilters"
+    style="display: inline-block;"
   >
-    <option value="name">Name</option>
-    <option value="level">Level</option>
-  </select>
+    <span data-value="name">Name</span>
+    <span data-value="level">Level</span>
+  </span>
 </label>
 <label>
   Levels
@@ -55,6 +57,7 @@
 <span class="count" data-bind="text=spells-filtered.length"></span>
 <script>
   b8r.component('./range');
+  b8r.component('https://rawgit.com/tonioloewald/bindinator.js/master/components/selector');
 
   function toggleShow(evt, elt) {
     const path = b8r.getListInstancePath(elt);

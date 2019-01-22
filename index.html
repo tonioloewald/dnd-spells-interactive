@@ -24,6 +24,28 @@
     select {
       border: 0 !important;
     }
+
+    .selector-component [data-children] > span {
+      margin: 0;
+      opacity: 1 !important;
+      background: #aaa;
+      color: white;
+      padding: 2px 4px;
+    }
+
+    .selector-component [data-children] > span:nth-child(1) {
+      padding-left: 8px;
+      border-radius: 99px 0 0 99px;
+    }
+
+    .selector-component [data-children] > span:nth-last-child(1) {
+      padding-right: 8px;
+      border-radius: 0 99px 99px 0;
+    }
+
+    .selector-component [data-children] > span[data-selected] {
+      background: royalblue;
+    }
   </style>
   <link rel="stylesheet" type="text/css" href="https://rawgit.com/tonioloewald/bindinator.js/master/css/b8r.css">
   <link rel="stylesheet" type="text/css" href="https://rawgit.com/tonioloewald/bindinator.js/master/icomoon/style.css">
@@ -53,7 +75,7 @@
             }, {})).map((name) => ({name, show: true}))
         );
         b8r.register('spells', spells);
-        
+
         // load the components after spells are loaded to avoid race condition
         // with filters; having table-filter listen for the spells data would also
         // solve the problem but be another couple of lines of code.
