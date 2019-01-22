@@ -1,0 +1,80 @@
+<style>
+  ._component_ {
+    background: #ddd;
+    margin: 0;
+    padding: 10px;
+    border-radius: 4px;
+  }
+
+  ._component_ .filterItem {
+    background: #aaa;
+    color: white;
+    padding: 2px 8px;
+    border-radius: 99px;
+    display: inline-block;
+    margin: 0 2px;
+  }
+
+  ._component_ .filterItem.active {
+    background: royalblue;
+  }
+</style>
+<label>
+  Sort By
+  <select data-bind="value=_component_.sortField" data-event="change:_component_.applyFilters">
+    <option value="name">Name</option>
+    <option value="level">Level</option>
+  </select>
+</label>
+<label>
+  Level Range
+  <input 
+    data-bind="value=_component_.minLevel"
+    type="number" min=0 max=9
+    data-event="change:_component_.applyFilters">
+  —
+  <input
+    data-bind="value=_component_.maxLevel"
+    type="number" min=0 max=9
+    data-event="change:_component_.applyFilters">
+</label>
+<label>
+  Classes
+  <span 
+    class="filterItem" 
+    data-list="casting-classes" 
+    data-bind="class(active)=.show;text=.name"
+    data-event="click:_component_.toggleShow"
+  ></span>
+</label>
+<script>
+  function toggleShow(evt, elt) {
+    const path = b8r.getListInstancePath(elt);
+    const showPath = `${path}.show`;
+    b8r.set(showPath, ! b8r.get(showPath));
+    applyFilters();
+  }
+
+  function applyFilters() {
+    const path = component.dataset.path;
+    const list = b8r.get(path) || [];
+    const minLevel = get('minLevel');
+    const maxLevel = get('maxLevel');
+    if (minLevel > maxLevel) {
+      minLevel = maxLevel;
+      set({minLevel});
+    }
+    const castingClassess = b8r.get('casting-classes') || [];
+    const displayClasses = castingClassess.filter(({show}) => show).map(({name}) => name);
+    const filtered = list.filter(({level, classes}) => level >= minLevel && 
+                                                       level <= maxLevel && 
+                                                       classes.find(({name}) => displayClasses.includes(name)));
+    const sortField = get('sortField');
+    filtered.sort((a, b) => b8r.sortAscending(a[sortField], b[sortField]));
+    b8r.set(`${path}-filtered`, filtered);
+  }
+
+  set({minLevel: 0, maxLevel: 9, sortField: 'name', applyFilters, toggleShow});
+
+  applyFilters();
+</script>

@@ -1,0 +1,169 @@
+<!--
+
+  {
+  "_id": "5bce91f95b7768e7920184d6",
+  "index": 1,
+  "name": "Acid Arrow",
+  "desc": [
+    "A shimmering green arrow streaks toward a target within range and bursts in a spray of acid. Make a ranged spell attack against the target. On a hit, the target takes 4d4 acid damage immediately and 2d4 acid damage at the end of its next turn. On a miss, the arrow splashes the target with acid for half as much of the initial damage and no damage at the end of its next turn."
+  ],
+  "higher_level": [
+    "When you cast this spell using a spell slot of 3rd level or higher, the damage (both initial and later) increases by 1d4 for each slot level above 2nd."
+  ],
+  "page": "phb 259",
+  "range": "90 feet",
+  "components": [
+    "V",
+    "S",
+    "M"
+  ],
+  "material": "Powdered rhubarb leaf and an adderâ€™s stomach.",
+  "ritual": "no",
+  "duration": "Instantaneous",
+  "concentration": "no",
+  "casting_time": "1 action",
+  "level": 2,
+  "school": {
+    "name": "Evocation",
+    "url": "http://www.dnd5eapi.co/api/magic-schools/5"
+  },
+  "classes": [
+    {
+      "url": "http://www.dnd5eapi.co/api/classes/12",
+      "name": "Wizard"
+    }
+  ],
+  "subclasses": [
+    {
+      "url": "http://www.dnd5eapi.co/api/subclasses/2",
+      "name": "Lore"
+    },
+    {
+      "url": "http://www.dnd5eapi.co/api/subclasses/4",
+      "name": "Land"
+    }
+  ],
+  "url": "http://www.dnd5eapi.co/api/spells/1"
+}
+-->
+<style>
+  ._component_ {
+    overflow-y: scroll;
+    overflow-y: overlay;
+    height: 100%;
+    position: relative;
+    flex-direction: column;
+    margin: 0;
+    padding: 10px;
+  }
+
+  ._component_ h4 {
+    margin: 5px 0;
+  }
+
+  ._component_:not(.expanded) .detail.detail {
+    display: none;
+  }
+
+  ._component_ .spell {
+    background: white;
+    padding: 5px 10px;
+    margin-bottom: 10px;
+    border-radius: 4px;
+  }
+
+  ._component_.expanded .detail {
+    display: block;
+  }
+
+  ._component_ .viewmode {
+    position: fixed;
+    top: 50px;
+    right: 10px;
+    background: white;
+    padding: 4px 6px;
+    border-radius: 4px;
+  }
+
+  ._component_ .level {
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    line-height: 24px;
+    font-size: 14px;
+    color: white;
+    background-color: royalblue;
+    text-align: center;
+    border-radius: 99px;
+    font-weight: bold;
+    vertical-align: 3px;
+  }
+
+  ._component_:not(.expanded) .summary > * {
+    display: inline-block;
+  }
+
+  ._component_ .character-class+.character-class:before {
+    content: ', ';
+  }
+
+  ._component_ .field {
+    display: inline-block;
+    position: relative;
+  }
+
+  ._component_.expanded .field[title] {
+    display: block;
+  }
+
+  ._component_.expanded .field[title]:before {
+    font-weight: bold;
+    color: royalblue;
+    content: attr(title) ": ";
+  }
+</style>
+<label class="viewmode">
+  <b>View Mode</b>
+  <select 
+    data-bind="value=_component_.viewmode"
+    data-event="change:_component_.setViewmode"
+  >
+    <option>Summary</option>
+    <option>Detail</option>
+  </select>
+</label>
+<div class="spell" data-list="_data_:name">
+  <div class="summary">
+    <h4>
+      <span title="level" class="level" data-bind="text=.level"></span>
+      <span data-bind="text=.name"></span>
+    </h4>
+    <span class="detail field" title="Classes">
+      <span class="character-class" data-list=".classes" data-bind="text=.name"></span>
+    </span>
+    <span class="field" title="Name" data-bind="text=.school.name"></span>
+    <span class="field" title="Casting Time" data-bind="text=.casting_time"></span>
+    <span class="field" title="Duration" data-bind="text=.duration"></span>
+    <span class="field" title="Components" data-bind="text=.components"></span>
+    <span class="field" title="Range" data-bind="text=.range"></span></p>
+  </div>
+  <div class="detail">
+    <div>
+      <b>Description</b>: 
+      <p data-list=".desc" data-bind="text=."></p>
+    </div>
+    <div data-bind="show_if=.higher_level.length">
+      <b>Higher Level</b>: 
+      <p data-list=".higher_level" data-bind="text=."></p>
+    </div>
+    <i>See <span data-bind="text=.page"></span></i>
+  </div>
+</div>
+<script>
+  set({
+    viewmode: 'Summary',
+    setViewmode() {
+      component.classList.toggle('expanded', get('viewmode') === 'Detail');
+    },
+  });
+</script>

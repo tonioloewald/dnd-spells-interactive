@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- bindinator.js Copyright ©2016-2018 Tonio Loewald -->
+  <meta charset="utf-8">
+  <title>D&D 5th Edition Spell List</title>
+  <style>
+    body {
+      background: #eee;
+    }
+
+    .layout {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      height: 100vh;
+    }
+
+    .table-filter-component,
+    .table-component {
+      position: relative;
+    }
+
+    select {
+      border: 0 !important;
+    }
+  </style>
+  <link rel="stylesheet" type="text/css" href="https://rawgit.com/tonioloewald/bindinator.js/master/css/b8r.css">
+  <link rel="stylesheet" type="text/css" href="https://rawgit.com/tonioloewald/bindinator.js/master/icomoon/style.css">
+  <script src="https://rawgit.com/tonioloewald/bindinator.js/master/lib/require.js"></script>
+  <script>
+    /* global require */
+    'use strict';
+    require.autoPreload().
+    then(() => {
+      const b8r = require('https://rawgit.com/tonioloewald/bindinator.js/master/source/b8r.js');
+      require('web-components/table.js');
+      window.b8r = b8r;
+      /*
+      // get data from the source
+      b8r.json('http://www.dnd5eapi.co/api/spells').then((data) => {
+        const detailRequests = data.results.map(({url}) => b8r.json(url));
+        Promise.all(detailRequests).then((spells) => b8r.register('spells', spells));
+      });
+      */
+      b8r.json('data/spells.json').then(data => {
+        const spells = data.map((spell) => ({_expand: false, ...spell}));
+        b8r.register(
+          'casting-classes', 
+          Object.keys(spells.
+            reduce((classes, spell) => {
+              if (spell.classes) spell.classes.forEach(({name}) => classes[name] = true);
+              return classes;
+            }, {})).map((name) => ({name, show: true}))
+        );
+        b8r.register('spells', spells);
+        b8r.component('components/table-filter');
+        b8r.component('components/table');
+      });
+    });
+  </script>
+</head>
+<body>
+  <div class="layout">
+    <div data-component="table-filter" data-path="spells"></div>
+    <div data-component="table" data-path="spells-filtered"></div>
+  </div>
+  <!--
+  <b8r-table style="height: 100vh; width: 100vw">
+    <b9r-tr>
+    </b9r-tr>
+    <b8r-tr data-list="spells:name">
+      <b8r-td>
+        <b data-bind="text=.name"></b>
+      </b8r-td>
+      <b8r-td>
+        <span data-list=".classes" data-bind="text=.name"></span>
+      </b8r-td>
+      <b8r-td>
+        <span data-bind="text=.level"></span>
+      </b8r-td>
+    </b8r-tr>
+  </b8r-table>
+  -->
+</body>
+</html>
