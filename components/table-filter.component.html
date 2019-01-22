@@ -18,6 +18,10 @@
   ._component_ .filterItem.active {
     background: royalblue;
   }
+
+  ._component_ .count {
+    color: #aaa;
+  }
 </style>
 <label>
   Sort By
@@ -31,13 +35,13 @@
 </label>
 <label>
   Levels
-  <div 
+  <span 
     data-min="0" 
     data-max="9" 
     data-component="range" 
     data-bind="value=filters.level-range"
     data-event="change:_component_.applyFilters"
-  ></div>
+  ></span>
 </label>
 <label>
   Classes
@@ -48,6 +52,7 @@
     data-event="click:_component_.toggleShow"
   ></span>
 </label>
+<span class="count" data-bind="text=spells-filtered.length"></span>
 <script>
   b8r.component('./range');
 
