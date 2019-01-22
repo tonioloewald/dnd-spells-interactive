@@ -5,17 +5,20 @@
 
   ._component_ .range-value {
     background: #aaa;
+    display: inline-block;
     color: white;
     padding: 2px 4px;
+    height: 24px;
+    line-height: 20px;
   }
 
   ._component_ .range-value:nth-child(1) {
-    padding-left: 6px;
+    padding-left: 8px;
     border-radius: 99px 0 0 99px;
   }
 
   ._component_ .range-value:nth-last-child(2) {
-    padding-right: 6px;
+    padding-right: 8px;
     border-radius: 0 99px 99px 0;
   }
 
@@ -45,30 +48,30 @@
       selected: true,
     });
   }
+  function setRange(a, b) {
+    const [min, max] = a < b ? 
+                       [a, b] : 
+                       [b, a];
+    console.log(min, max)
+    get('rangeValues').forEach(item => {
+      item.selected = item.value >= min && item.value <= max;
+    });
+    set({min: parseInt(min, 10), max: parseInt(max, 10)});
+    touch('rangeValues');
+  }
   set({
     clickedValue: null,
     rangeValues,
     mousedown(evt, target) {
       const clickedValue = b8r.getListInstance(target).value;
       set({clickedValue});
-      rangeValues.forEach(item => {
-        item.selected = item.value === clickedValue;
-      });
-      set({min: parseInt(clickedValue, 10), max: parseInt(clickedValue, 10)});
-      touch('rangeValues');
+      setRange(clickedValue, clickedValue);
     },
     mouseenter(evt,target) {
       const clickedValue = get('clickedValue');
       if (clickedValue !== null) {
         const enteredValue = b8r.getListInstance(target).value;
-        const [min, max] = clickedValue < enteredValue ? 
-                           [clickedValue, enteredValue] : 
-                           [enteredValue, clickedValue];
-        rangeValues.forEach(item => {
-          item.selected = item.value >= min && item.value <= max;
-        });
-        set({min: parseInt(min, 10), max: parseInt(max, 10)});
-        touch('rangeValues');
+        setRange(clickedValue, enteredValue);
       }
     },
     mouseup(evt, target) {
