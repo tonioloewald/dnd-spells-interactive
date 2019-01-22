@@ -145,6 +145,11 @@
     <span class="field" title="Casting Time" data-bind="text=.casting_time"></span>
     <span class="field" title="Duration" data-bind="text=.duration"></span>
     <span class="field" title="Components" data-bind="text=.components"></span>
+    <!-- seems to be a subtle bug in b8r which is stopping show_if from working
+      if assigned to the inner-element -->
+    <span data-bind="show_if=.material">
+      <span class="detail field" title="Material" data-bind="text=.material"></span>
+    </span>
     <span class="field" title="Range" data-bind="text=.range"></span></p>
   </div>
   <div class="detail">
