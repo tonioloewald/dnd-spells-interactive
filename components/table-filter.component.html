@@ -21,22 +21,23 @@
 </style>
 <label>
   Sort By
-  <select data-bind="value=_component_.sortField" data-event="change:_component_.applyFilters">
+  <select 
+    data-bind="value=_component_.sortField"
+    data-event="change:_component_.applyFilters"
+  >
     <option value="name">Name</option>
     <option value="level">Level</option>
   </select>
 </label>
 <label>
-  Level Range
-  <input 
-    data-bind="value=_component_.minLevel"
-    type="number" min=0 max=9
-    data-event="change:_component_.applyFilters">
-  —
-  <input
-    data-bind="value=_component_.maxLevel"
-    type="number" min=0 max=9
-    data-event="change:_component_.applyFilters">
+  Levels
+  <div 
+    data-min="0" 
+    data-max="9" 
+    data-component="range" 
+    data-bind="value=filters.level-range"
+    data-event="change:_component_.applyFilters"
+  ></div>
 </label>
 <label>
   Classes
@@ -48,6 +49,8 @@
   ></span>
 </label>
 <script>
+  b8r.component('./range');
+
   function toggleShow(evt, elt) {
     const path = b8r.getListInstancePath(elt);
     const showPath = `${path}.show`;
@@ -55,15 +58,13 @@
     applyFilters();
   }
 
+  b8r.set('filters', {'level-range': {min: 0, max: 9}});
+
   function applyFilters() {
     const path = component.dataset.path;
     const list = b8r.get(path) || [];
-    const minLevel = get('minLevel');
-    const maxLevel = get('maxLevel');
-    if (minLevel > maxLevel) {
-      minLevel = maxLevel;
-      set({minLevel});
-    }
+    const minLevel = b8r.get('filters.level-range.min');
+    const maxLevel = b8r.get('filters.level-range.max');
     const castingClassess = b8r.get('casting-classes') || [];
     const displayClasses = castingClassess.filter(({show}) => show).map(({name}) => name);
     const filtered = list.filter(({level, classes}) => level >= minLevel && 
@@ -74,7 +75,7 @@
     b8r.set(`${path}-filtered`, filtered);
   }
 
-  set({minLevel: 0, maxLevel: 9, sortField: 'name', applyFilters, toggleShow});
+  set({sortField: 'name', applyFilters, toggleShow});
 
   applyFilters();
 </script>

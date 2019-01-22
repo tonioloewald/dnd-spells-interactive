@@ -7,7 +7,7 @@ const fs = require('fs');
 const url = require('url');
 
 const settings = {
-  socket: 8017,
+  socket: 8018,
   web_root: __dirname,
   cert_path: 'localhost-ssl/public.pem',
   key_path: 'localhost-ssl/private.pem',

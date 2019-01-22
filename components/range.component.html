@@ -1,0 +1,81 @@
+<style>
+  ._component_ {
+    display: inline-block;
+  }
+
+  ._component_ .range-value {
+    background: #ccc;
+    color: white;
+    padding: 2px 4px;
+  }
+
+  ._component_ .range-value:nth-child(1) {
+    padding-left: 6px;
+    border-radius: 99px 0 0 99px;
+  }
+
+  ._component_ .range-value:nth-last-child(2) {
+    padding-right: 6px;
+    border-radius: 0 99px 99px 0;
+  }
+
+  ._component_ .range-value.selected {
+    background: royalblue;
+  }
+</style>
+<span 
+  class="range-value" 
+  data-list="_component_.rangeValues" 
+  data-bind="text=.value;class(selected)=.selected"
+  data-event="
+    mousedown:_component_.mousedown;
+    mouseenter:_component_.mouseenter;
+    mouseup:_component_.mouseup;
+  "
+></span>
+<script>
+  let {min, max, valuePath} = component.dataset;
+  if (min === undefined) min = 0;
+  if (max === undefined) max = 10;
+  const rangeValues = [];
+  const selection = valuePath ? b8r.get(valuePath) : {min, max};
+  for(let value = selection.min; value <= selection.max; value++) {
+    rangeValues.push({ 
+      value,
+      selected: true,
+    });
+  }
+  set({
+    clickedValue: null,
+    rangeValues,
+    mousedown(evt, target) {
+      const clickedValue = b8r.getListInstance(target).value;
+      set({clickedValue});
+      rangeValues.forEach(item => {
+        item.selected = item.value === clickedValue;
+      });
+      set({min: parseInt(clickedValue, 10), max: parseInt(clickedValue, 10)});
+      touch('rangeValues');
+    },
+    mouseenter(evt,target) {
+      const clickedValue = get('clickedValue');
+      if (clickedValue !== null) {
+        const enteredValue = b8r.getListInstance(target).value;
+        const [min, max] = clickedValue < enteredValue ? 
+                           [clickedValue, enteredValue] : 
+                           [enteredValue, clickedValue];
+        rangeValues.forEach(item => {
+          item.selected = item.value >= min && item.value <= max;
+        });
+        set({min: parseInt(min, 10), max: parseInt(max, 10)});
+        touch('rangeValues');
+      }
+    },
+    mouseup(evt, target) {
+      set('clickedValue', null);
+      const {min, max} = get();
+      set('value', {min, max});
+      b8r.trigger('change', component);
+    },
+  });
+</script>

@@ -34,8 +34,7 @@
     require.autoPreload().
     then(() => {
       const b8r = require('https://rawgit.com/tonioloewald/bindinator.js/master/source/b8r.js');
-      require('web-components/table.js');
-      window.b8r = b8r;
+      window.b8r = b8r; // for convenient debugging
       /*
       // get data from the source
       b8r.json('http://www.dnd5eapi.co/api/spells').then((data) => {
@@ -65,22 +64,5 @@
     <div data-component="table-filter" data-path="spells"></div>
     <div data-component="table" data-path="spells-filtered"></div>
   </div>
-  <!--
-  <b8r-table style="height: 100vh; width: 100vw">
-    <b9r-tr>
-    </b9r-tr>
-    <b8r-tr data-list="spells:name">
-      <b8r-td>
-        <b data-bind="text=.name"></b>
-      </b8r-td>
-      <b8r-td>
-        <span data-list=".classes" data-bind="text=.name"></span>
-      </b8r-td>
-      <b8r-td>
-        <span data-bind="text=.level"></span>
-      </b8r-td>
-    </b8r-tr>
-  </b8r-table>
-  -->
 </body>
 </html>
