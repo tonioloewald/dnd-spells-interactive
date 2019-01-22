@@ -72,7 +72,7 @@
             reduce((classes, spell) => {
               if (spell.classes) spell.classes.forEach(({name}) => classes[name] = true);
               return classes;
-            }, {})).map((name) => ({name, show: true}))
+            }, {})).sort().map((name) => ({name, show: true}))
         );
         b8r.register('spells', spells);
 
