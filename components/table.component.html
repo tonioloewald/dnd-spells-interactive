@@ -67,7 +67,7 @@
 
   ._component_ .spell {
     background: white;
-    padding: 5px 10px;
+    padding: 2px 10px;
     margin-bottom: 10px;
     border-radius: 4px;
   }
@@ -121,6 +121,14 @@
     color: royalblue;
     content: attr(title) ": ";
   }
+
+  ._component_ .description {
+    margin: 5px 0;
+  }
+
+  ._component_ .description p {
+    margin: 0 0 5px;
+  }
 </style>
 <label class="viewmode">
   <b>View Mode</b>
@@ -147,12 +155,12 @@
     <span class="field" title="Components" data-bind="text=.components"></span>
     <!-- seems to be a subtle bug in b8r which is stopping show_if from working
       if assigned to the inner-element -->
-    <span data-bind="show_if=.material">
-      <span class="detail field" title="Material" data-bind="text=.material"></span>
+    <span class="detail" data-bind="show_if=.material">
+      <span class="field" title="Material" data-bind="text=.material"></span>
     </span>
-    <span class="field" title="Range" data-bind="text=.range"></span></p>
+    <span class="field" title="Range" data-bind="text=.range"></span>
   </div>
-  <div class="detail">
+  <div class="description detail">
     <div>
       <b>Description</b>: 
       <p data-list=".desc" data-bind="text=."></p>
