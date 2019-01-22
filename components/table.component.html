@@ -13,7 +13,7 @@
     margin: 5px 0;
   }
 
-  ._component_:not(.expanded) .detail.detail {
+  ._component_ .spell:not(.expanded) .detail.detail {
     display: none;
   }
 
@@ -22,16 +22,17 @@
     padding: 2px 10px;
     margin-bottom: 10px;
     border-radius: 4px;
+    position: relative;
   }
 
-  ._component_.expanded .detail {
+  ._component_ .spell.expanded .detail {
     display: block;
   }
 
   ._component_ .viewmode {
-    position: fixed;
-    top: 50px;
-    right: 10px;
+    position: absolute;
+    top: 5px;
+    right: 5px;
   }
 
   ._component_ .level {
@@ -48,7 +49,7 @@
     vertical-align: 3px;
   }
 
-  ._component_:not(.expanded) .summary > * {
+  ._component_ .spell:not(.expanded) .summary > * {
     display: inline-block;
   }
 
@@ -61,11 +62,11 @@
     position: relative;
   }
 
-  ._component_.expanded .field[title] {
+  ._component_ .spell.expanded .field[title] {
     display: block;
   }
 
-  ._component_.expanded .field[title]:before {
+  ._component_ .spell.expanded .field[title]:before {
     font-weight: bold;
     color: royalblue;
     content: attr(title) ": ";
@@ -78,17 +79,25 @@
   ._component_ .description p {
     margin: 0 0 5px;
   }
+
+  .viewmode input {
+    position: relative;
+    left: -1000px;
+  }
+
+  .viewmode input+span {
+    color: #aaa;
+  }
+
+  .viewmode input:checked+span {
+    color: royalblue;
+  }
 </style>
 <div
-  class="viewmode"
-  data-component="selector" 
-  data-bind="value=_component_.viewmode"
-  data-event="change:_component_.setViewmode"
+  class="spell" 
+  data-list="_data_:name" 
+  data-bind="class(expanded)=._expanded"
 >
-  <span>List</span>
-  <span>Detail</span>
-</div>
-<div class="spell" data-list="_data_:name">
   <div class="summary">
     <h4>
       <span title="level" class="level" data-bind="text=.level"></span>
@@ -119,13 +128,10 @@
     </div>
     <i>See <span data-bind="text=.page"></span></i>
   </div>
+  <label
+    class="viewmode"
+  >
+    <input type="checkbox" data-bind="checked=._expanded">
+    <span class="icon-paragraph-left3"></span>
+  </label>
 </div>
-<script>
-  b8r.component('https://rawgit.com/tonioloewald/bindinator.js/master/components/selector');
-  set({
-    viewmode: 'List',
-    setViewmode() {
-      component.classList.toggle('expanded', get('viewmode') === 'Detail');
-    },
-  });
-</script>

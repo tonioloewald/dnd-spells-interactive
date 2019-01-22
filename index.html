@@ -65,7 +65,7 @@
       });
       */
       b8r.json('data/spells.json').then(data => {
-        const spells = data.map((spell) => ({_expand: false, ...spell}));
+        const spells = data.map((spell) => ({_expanded: false, ...spell}));
         b8r.register(
           'casting-classes', 
           Object.keys(spells.

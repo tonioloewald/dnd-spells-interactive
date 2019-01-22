@@ -6,13 +6,20 @@
     border-radius: 4px;
   }
 
+  ._component_ > *+* {
+    margin-left: 10px;
+  }
+
   ._component_ .filterItem {
     background: #aaa;
     color: white;
     padding: 2px 8px;
     border-radius: 99px;
     display: inline-block;
-    margin: 0 2px;
+  }
+
+  ._component_ .filterItem + .filterItem {
+    margin-left: 2px;
   }
 
   ._component_ .filterItem.active {
@@ -31,8 +38,8 @@
     data-event="change:_component_.applyFilters"
     style="display: inline-block;"
   >
-    <span data-value="name">Name</span>
     <span data-value="level">Level</span>
+    <span data-value="name">Name</span>
   </span>
 </label>
 <label>
@@ -45,7 +52,7 @@
     data-event="change:_component_.applyFilters"
   ></span>
 </label>
-<label>
+<label class="stretchy">
   Classes
   <span 
     class="filterItem" 
@@ -83,7 +90,7 @@
     b8r.set(`${path}-filtered`, filtered);
   }
 
-  set({sortField: 'name', applyFilters, toggleShow});
+  set({sortField: 'level', applyFilters, toggleShow});
 
   applyFilters();
 </script>
