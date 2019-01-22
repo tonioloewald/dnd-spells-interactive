@@ -53,6 +53,10 @@
             }, {})).map((name) => ({name, show: true}))
         );
         b8r.register('spells', spells);
+        
+        // load the components after spells are loaded to avoid race condition
+        // with filters; having table-filter listen for the spells data would also
+        // solve the problem but be another couple of lines of code.
         b8r.component('components/table-filter');
         b8r.component('components/table');
       });
