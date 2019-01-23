@@ -31,7 +31,7 @@
   data-list="_component_.rangeValues" 
   data-bind="text=.value;class(selected)=.selected"
   data-event="
-    mousedown:_component_.mousedown;
+    mousedown,touchstart:_component_.mousedown;
     mouseenter:_component_.mouseenter;
     mouseup:_component_.mouseup;
   "
@@ -49,32 +49,33 @@
     });
   }
   function setRange(a, b) {
-    const [min, max] = a < b ? 
-                       [a, b] : 
-                       [b, a];
-    console.log(min, max)
+    const [min, max] = [a, b].sort();
     get('rangeValues').forEach(item => {
       item.selected = item.value >= min && item.value <= max;
     });
-    set({min: parseInt(min, 10), max: parseInt(max, 10)});
+    set({min, max});
     touch('rangeValues');
   }
   set({
     clickedValue: null,
     rangeValues,
     mousedown(evt, target) {
-      const clickedValue = b8r.getListInstance(target).value;
+      const enteredValue = parseInt(b8r.getListInstance(target).value, 10);
+      const clickedValue = get('clickedValue') !== null ? get('clickedValue') : enteredValue;
+      console.log({clickedValue, enteredValue});
       set({clickedValue});
-      setRange(clickedValue, clickedValue);
+      setRange(clickedValue, enteredValue);
+      return evt.type === 'touchstart';
     },
     mouseenter(evt,target) {
       const clickedValue = get('clickedValue');
       if (clickedValue !== null) {
-        const enteredValue = b8r.getListInstance(target).value;
+        const enteredValue = parseInt(b8r.getListInstance(target).value, 10);
         setRange(clickedValue, enteredValue);
       }
     },
     mouseup(evt, target) {
+      console.log(evt)
       set('clickedValue', null);
       const {min, max} = get();
       set('value', {min, max});
