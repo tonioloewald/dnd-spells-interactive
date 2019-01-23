@@ -45,7 +45,6 @@
     data-bind="value=_component_.sortField"
     data-component="selector"
     data-event="change:_component_.applyFilters"
-    style="display: inline-block;"
   >
     <span data-value="level">Level</span>
     <span data-value="name">Name</span>
@@ -68,7 +67,7 @@
       class="filterItem" 
       data-list="casting-classes"
       data-bind="class(active)=.show;text=.name"
-      data-event="mouseup:_component_.toggleShow"
+      data-event="mouseup,touchstart:_component_.toggleShow"
     ></span>
   </div>
 </label>
