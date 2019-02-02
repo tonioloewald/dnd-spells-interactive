@@ -55,39 +55,33 @@
   </style>
   <link rel="stylesheet" type="text/css" href="https://rawgit.com/tonioloewald/bindinator.js/master/css/b8r.css">
   <link rel="stylesheet" type="text/css" href="https://rawgit.com/tonioloewald/bindinator.js/master/icomoon/style.css">
-  <script src="https://rawgit.com/tonioloewald/bindinator.js/master/lib/require.js"></script>
-  <script>
-    /* global require */
-    'use strict';
-    require.autoPreload().
-    then(() => {
-      const b8r = require('https://rawgit.com/tonioloewald/bindinator.js/master/source/b8r.js');
-      window.b8r = b8r; // for convenient debugging
-      /*
-      // get data from the source
-      b8r.json('http://www.dnd5eapi.co/api/spells').then((data) => {
-        const detailRequests = data.results.map(({url}) => b8r.json(url));
-        Promise.all(detailRequests).then((spells) => b8r.register('spells', spells));
-      });
-      */
-      b8r.json('data/spells.json').then(data => {
-        const spells = data.map((spell) => ({_expanded: false, ...spell}));
-        b8r.register(
-          'casting-classes', 
-          Object.keys(spells.
-            reduce((classes, spell) => {
-              if (spell.classes) spell.classes.forEach(({name}) => classes[name] = true);
-              return classes;
-            }, {})).sort().map((name) => ({name, show: true}))
-        );
-        b8r.register('spells', spells);
+  <script type="module">
+    import b8r from 'https://rawgit.com/tonioloewald/bindinator.js/master/source/b8r.js';
+    window.b8r = b8r; // for convenient debugging
+    /*
+    // get data from the source
+    b8r.json('http://www.dnd5eapi.co/api/spells').then((data) => {
+      const detailRequests = data.results.map(({url}) => b8r.json(url));
+      Promise.all(detailRequests).then((spells) => b8r.register('spells', spells));
+    });
+    */
+    b8r.json('data/spells.json').then(data => {
+      const spells = data.map((spell) => ({_expanded: false, ...spell}));
+      b8r.register(
+        'casting-classes', 
+        Object.keys(spells.
+          reduce((classes, spell) => {
+            if (spell.classes) spell.classes.forEach(({name}) => classes[name] = true);
+            return classes;
+          }, {})).sort().map((name) => ({name, show: true}))
+      );
+      b8r.register('spells', spells);
 
-        // load the components after spells are loaded to avoid race condition
-        // with filters; having table-filter listen for the spells data would also
-        // solve the problem but be another couple of lines of code.
-        b8r.component('components/table-filter');
-        b8r.component('components/table');
-      });
+      // load the components after spells are loaded to avoid race condition
+      // with filters; having table-filter listen for the spells data would also
+      // solve the problem but be another couple of lines of code.
+      b8r.component('components/table-filter');
+      b8r.component('components/table');
     });
   </script>
 </head>

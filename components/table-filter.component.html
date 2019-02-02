@@ -67,7 +67,7 @@
       class="filterItem" 
       data-list="casting-classes"
       data-bind="class(active)=.show;text=.name"
-      data-event="mouseup,touchstart:_component_.toggleShow"
+      data-event="mousedown:_component_.toggleShow"
     ></span>
   </div>
 </label>
@@ -85,6 +85,7 @@
     const showPath = `${path}.show`;
     b8r.set(showPath, ! b8r.get(showPath));
     applyFilters();
+    return true;
   }
 
   b8r.set('filters', {'level-range': {min: 0, max: 9}});
