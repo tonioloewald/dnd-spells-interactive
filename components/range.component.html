@@ -75,11 +75,9 @@
       }
     },
     mouseup(evt, target) {
-      console.log(evt)
       set('clickedValue', null);
       const {min, max} = get();
       set('value', {min, max});
-      b8r.trigger('change', component);
     },
   });
 </script>

@@ -44,10 +44,10 @@
   <span 
     data-bind="value=_component_.sortField"
     data-component="selector"
-    data-event="change:_component_.applyFilters"
   >
     <span data-value="level">Level</span>
     <span data-value="name">Name</span>
+    <span data-value="school">School</span>
   </span>
 </label>
 <label>
@@ -57,7 +57,6 @@
     data-max="9" 
     data-component="range" 
     data-bind="value=filters.level-range"
-    data-event="change:_component_.applyFilters"
   ></span>
 </label>
 <label class="stretchy">
@@ -90,7 +89,14 @@
 
   b8r.set('filters', {'level-range': {min: 0, max: 9}});
 
-  function applyFilters() {
+  const sortFieldGetters = {
+    name: spell => spell.name,
+    level: spell => parseInt(spell.level, 10),
+    school: spell => spell.school.name,
+  }
+
+  // workaround for a bug/design flaw in the select component (it triggers WAY too many change events)
+  const applyFilters = b8r.debounce(() => {
     const path = component.dataset.path;
     const list = b8r.get(path) || [];
     const minLevel = b8r.get('filters.level-range.min');
@@ -101,11 +107,14 @@
                                                        level <= maxLevel && 
                                                        classes.find(({name}) => displayClasses.includes(name)));
     const sortField = get('sortField');
-    filtered.sort((a, b) => b8r.sortAscending(a[sortField], b[sortField]));
+    const sortFieldGetter = sortFieldGetters[sortField]
+    filtered.sort((a, b) => b8r.sortAscending(sortFieldGetter(a), sortFieldGetter(b)));
     b8r.set(`${path}-filtered`, filtered);
-  }
+  }, 10);
 
   set({sortField: 'level', applyFilters, toggleShow});
 
   applyFilters();
+
+  on('change', '_component_.applyFilters');
 </script>
